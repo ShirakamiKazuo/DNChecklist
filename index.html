@@ -72,7 +72,7 @@
   .wrapper {
     position: relative;
     z-index: 1;
-    max-width: 960px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -226,9 +226,10 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
-    margin-bottom: 20px;
     overflow: hidden;
     transition: box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
   }
   .section-card:hover {
     box-shadow: 0 0 24px rgba(74,111,165,0.12);
@@ -287,7 +288,8 @@
 
   .badge-weekly { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.25); }
   .badge-daily  { background: rgba(61,214,200,0.1);  color: var(--teal); border: 1px solid rgba(61,214,200,0.2); }
-  .badge-once   { background: rgba(155,114,207,0.1); color: var(--purple); border: 1px solid rgba(155,114,207,0.2); }
+  .badge-once    { background: rgba(155,114,207,0.1); color: var(--purple); border: 1px solid rgba(155,114,207,0.2); }
+  .badge-counter { background: rgba(224,92,92,0.1);  color: var(--red);    border: 1px solid rgba(224,92,92,0.2); }
 
   .section-progress {
     font-family: 'Cinzel', serif;
@@ -311,6 +313,9 @@
   .section-body {
     padding: 16px 20px;
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .section-card.collapsed .section-body {
@@ -619,10 +624,206 @@
     border-radius: 0 2px 0 0;
   }
 
+
+  /* Counter rows */
+  .counter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.2s;
+  }
+  .counter-row:hover { border-color: var(--border-glow); }
+
+  .counter-name {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .counter-btn {
+    background: rgba(255,255,255,0.04);
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .counter-btn:hover { background: rgba(74,111,165,0.2); color: var(--text); }
+  .counter-btn.minus:hover { background: rgba(224,92,92,0.2); color: var(--red); }
+  .counter-btn.plus:hover  { background: rgba(61,214,200,0.15); color: var(--teal); }
+
+  .counter-val {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    min-width: 34px;
+    text-align: center;
+    background: rgba(255,255,255,0.03);
+    padding: 0 4px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .counter-val.zero { color: var(--text-muted); }
+
+
+  /* Drag handle */
+  .drag-handle {
+    cursor: grab;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0 4px 0 0;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color 0.15s;
+    user-select: none;
+    letter-spacing: -1px;
+  }
+  .drag-handle:hover { color: var(--text-dim); }
+  .drag-handle:active { cursor: grabbing; }
+
+  .section-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.97);
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .section-card.drag-over {
+    border-color: var(--border-glow);
+    box-shadow: 0 0 20px rgba(74,111,165,0.3);
+  }
+
+  #sections-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
   @media (max-width: 500px) {
     .controls { flex-direction: column; }
     .modal { padding: 22px 18px 18px; }
     h1 { font-size: 1.2rem; }
+  
+  /* Counter rows */
+  .counter-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    transition: border-color 0.2s;
+  }
+  .counter-row:hover { border-color: var(--border-glow); }
+
+  .counter-name {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .counter-btn {
+    background: rgba(255,255,255,0.04);
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .counter-btn:hover { background: rgba(74,111,165,0.2); color: var(--text); }
+  .counter-btn.minus:hover { background: rgba(224,92,92,0.2); color: var(--red); }
+  .counter-btn.plus:hover  { background: rgba(61,214,200,0.15); color: var(--teal); }
+
+  .counter-val {
+    font-family: 'Cinzel', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    min-width: 34px;
+    text-align: center;
+    background: rgba(255,255,255,0.03);
+    padding: 0 4px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  .counter-val.zero { color: var(--text-muted); }
+
+
+  /* Drag handle */
+  .drag-handle {
+    cursor: grab;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 0 4px 0 0;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color 0.15s;
+    user-select: none;
+    letter-spacing: -1px;
+  }
+  .drag-handle:hover { color: var(--text-dim); }
+  .drag-handle:active { cursor: grabbing; }
+
+  .section-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.97);
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .section-card.drag-over {
+    border-color: var(--border-glow);
+    box-shadow: 0 0 20px rgba(74,111,165,0.3);
+  }
+
+  #sections-container { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -665,6 +866,7 @@
         <option value="weekly">Weekly</option>
         <option value="daily">Daily</option>
         <option value="once">One-time</option>
+        <option value="counter">Counter (Inventory)</option>
       </select>
     </div>
     <div class="modal-field">
@@ -802,28 +1004,30 @@ function renderSection(sec, si) {
   const total = sec.chars.length;
   const done = sec.chars.filter(c => c.done).length;
   const pct = total ? Math.round(done / total * 100) : 0;
-  const badgeClass = { weekly: 'badge-weekly', daily: 'badge-daily', once: 'badge-once' }[sec.type] || 'badge-weekly';
-  const badgeLabel = { weekly: 'Weekly', daily: 'Daily', once: 'One-time' }[sec.type];
+  const badgeClass = { weekly: 'badge-weekly', daily: 'badge-daily', once: 'badge-once', counter: 'badge-counter' }[sec.type] || 'badge-weekly';
+  const badgeLabel = { weekly: 'Weekly', daily: 'Daily', once: 'One-time', counter: 'Counter' }[sec.type];
+  const isCounter = sec.type === 'counter';
 
   return `
-  <div class="section-card ${sec.collapsed ? 'collapsed' : ''}" id="sec-${sec.id}">
+  <div class="section-card ${sec.collapsed ? 'collapsed' : ''}" id="sec-${sec.id}" draggable="true" data-sec-id="${sec.id}">
     <div class="section-header" onclick="toggleCollapse(${si})">
+      <span class="drag-handle" data-drag-handle onmousedown="event.stopPropagation()" title="Drag to reorder">⠿⠿</span>
       <div class="section-dot" style="background:${sec.color};color:${sec.color}"></div>
       <div class="section-title-wrap">
         <div class="section-title">${esc(sec.name)}</div>
-        <div class="section-meta">${done} / ${total} characters</div>
+        <div class="section-meta">${isCounter ? sec.chars.reduce((a,c)=>a+(c.count||0),0)+' total tickets' : done+' / '+total+' characters'}</div>
       </div>
       <span class="section-badge ${badgeClass}">${badgeLabel}</span>
-      <span class="section-progress"><span class="progress-fill">${done}</span>/${total}</span>
+      ${!isCounter ? `<span class="section-progress"><span class="progress-fill">${done}</span>/${total}</span>` : ''}
       <span class="section-chevron">▼</span>
-      <div class="section-progress-bar" style="width:${pct}%;background:linear-gradient(90deg,${sec.color}66,${sec.color})"></div>
+      ${!isCounter ? `<div class="section-progress-bar" style="width:${pct}%;background:linear-gradient(90deg,${sec.color}66,${sec.color})"></div>` : ''}
     </div>
     <div class="section-body">
       <div class="char-grid" id="chars-${sec.id}">
-        ${sec.chars.map((ch, ci) => renderChar(sec, si, ch, ci)).join('')}
+        ${isCounter ? sec.chars.map((ch,ci)=>renderCounter(sec,si,ch,ci)).join('') : sec.chars.map((ch,ci)=>renderChar(sec,si,ch,ci)).join('')}
       </div>
       <div class="add-char-row">
-        <input type="text" class="input-field" id="newchar-${sec.id}" placeholder="Character name..." onkeydown="if(event.key==='Enter')addChar(${si})" />
+        <input type="text" class="input-field" id="newchar-${sec.id}" placeholder="${isCounter ? 'Ticket name...' : 'Character name...'}" onkeydown="if(event.key==='Enter')addChar(${si})" />
         <button class="btn-add-char" onclick="addChar(${si})">＋ Add</button>
       </div>
       <div class="section-controls">
@@ -846,7 +1050,28 @@ function renderChar(sec, si, ch, ci) {
   </div>`;
 }
 
+
+function renderCounter(sec, si, ch, ci) {
+  const val = ch.count || 0;
+  return `
+  <div class="counter-row">
+    <span class="counter-name">${esc(ch.name)}</span>
+    <div class="counter-controls">
+      <button class="counter-btn minus" onclick="adjustCount(${si},${ci},-1)" title="Use one">−</button>
+      <span class="counter-val ${val===0?'zero':''}">${val}</span>
+      <button class="counter-btn plus" onclick="adjustCount(${si},${ci},1)" title="Add one">+</button>
+    </div>
+    <button class="char-del" onclick="deleteChar(${si},${ci})" title="Remove">×</button>
+  </div>`;
+}
+
 // ===================== ACTIONS =====================
+function adjustCount(si, ci, delta) {
+  const ch = state.sections[si].chars[ci];
+  ch.count = Math.max(0, (ch.count || 0) + delta);
+  save(); render();
+}
+
 function toggleChar(si, ci) {
   state.sections[si].chars[ci].done = !state.sections[si].chars[ci].done;
   save(); render();
@@ -861,7 +1086,8 @@ function addChar(si) {
   const input = document.getElementById(`newchar-${state.sections[si].id}`);
   const name = input ? input.value.trim() : '';
   if (!name) return;
-  state.sections[si].chars.push({ id: 'c' + Date.now(), name, done: false });
+  const isCounter = state.sections[si].type === 'counter';
+  state.sections[si].chars.push(isCounter ? { id: 'c' + Date.now(), name, count: 0 } : { id: 'c' + Date.now(), name, done: false });
   save(); render();
 }
 
@@ -949,11 +1175,67 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+
+// ===================== DRAG & DROP =====================
+let dragSrcId = null;
+
+function initDragDrop() {
+  const container = document.getElementById('sections-container');
+
+  container.addEventListener('dragstart', e => {
+    const card = e.target.closest('.section-card');
+    if (!card) return;
+    dragSrcId = card.dataset.secId;
+    setTimeout(() => card.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+
+  container.addEventListener('dragend', e => {
+    const card = e.target.closest('.section-card');
+    if (card) card.classList.remove('dragging');
+    document.querySelectorAll('.section-card.drag-over').forEach(c => c.classList.remove('drag-over'));
+    dragSrcId = null;
+  });
+
+  container.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const card = e.target.closest('.section-card');
+    document.querySelectorAll('.section-card.drag-over').forEach(c => c.classList.remove('drag-over'));
+    if (card && card.dataset.secId !== dragSrcId) card.classList.add('drag-over');
+  });
+
+  container.addEventListener('dragleave', e => {
+    const card = e.target.closest('.section-card');
+    if (card) card.classList.remove('drag-over');
+  });
+
+  container.addEventListener('drop', e => {
+    e.preventDefault();
+    const targetCard = e.target.closest('.section-card');
+    if (!targetCard || !dragSrcId) return;
+    const targetId = targetCard.dataset.secId;
+    if (targetId === dragSrcId) return;
+
+    const srcIdx = state.sections.findIndex(s => s.id === dragSrcId);
+    const tgtIdx = state.sections.findIndex(s => s.id === targetId);
+    if (srcIdx === -1 || tgtIdx === -1) return;
+
+    // Reorder
+    const [moved] = state.sections.splice(srcIdx, 1);
+    state.sections.splice(tgtIdx, 0, moved);
+    save();
+    render();
+    initDragDrop();
+  });
+}
+
 // ===================== INIT =====================
 checkAndAutoReset();
 render();
+initDragDrop();
 updateResetTimers();
-setInterval(() => { checkAndAutoReset(); render(); updateResetTimers(); }, 60000);
+setInterval(() => { checkAndAutoReset(); render(); initDragDrop(); updateResetTimers(); }, 60000);
 </script>
 </body>
 </html>
