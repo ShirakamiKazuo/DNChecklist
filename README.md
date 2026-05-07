@@ -72,15 +72,6 @@ Grab the **⠿⠿** handle on the left of any card header and drag it to a new p
 ### Manual reset
 Use **↺ Reset All** in the top banner to clear all checkboxes across all activities at once. Counter values are not affected.
 
-## Hosting on GitHub Pages
-
-1. Rename the file to `index.html`
-2. Push it to a GitHub repository
-3. Go to **Settings → Pages** and set the source to your main branch
-4. Your tracker will be live at `https://yourusername.github.io/repo-name/`
-
-> **Note:** `localStorage` is per device and per browser. Progress does not sync between your PC and phone — each device keeps its own save data.
-
 ## Tech
 
 - Plain HTML, CSS, and vanilla JavaScript — no frameworks or dependencies
