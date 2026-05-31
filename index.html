@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dragon Nest SEA — Adventure Tracker</title>
+  <title>Adventure Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -16,19 +16,28 @@
       <div class="ornament-diamond"></div>
       <div class="ornament-line right"></div>
     </div>
-    <h1>Dragon Nest SEA</h1>
+    <h1 id="page-title">Dragon Nest SEA</h1>
     <div class="subtitle">Adventure Tracker</div>
+    <div class="tab-toggle">
+      <button class="tab-btn active" id="tab-dn" onclick="switchTab('dn')">🐉 Dragon Nest</button>
+      <button class="tab-btn" id="tab-custom" onclick="switchTab('custom')">⚙️ Custom</button>
+    </div>
   </header>
 
-  <div class="reset-banner">
+  <div class="reset-banner" id="dn-banner">
     <div class="reset-info">
       Weekly reset: <span id="nextReset">—</span> &nbsp;|&nbsp; Daily reset: <span id="nextDaily">—</span>
     </div>
     <button class="btn-reset-all" onclick="resetAll()">↺ Reset All</button>
   </div>
 
+  <div class="reset-banner custom-banner" id="custom-banner" style="display:none;">
+    <div class="reset-info">Each activity resets on its own custom schedule</div>
+    <button class="btn-reset-all" onclick="resetAll()">↺ Reset All</button>
+  </div>
+
   <div class="controls">
-    <button class="btn-primary" onclick="openAddSection()">＋ Add Dungeon / Activity</button>
+    <button class="btn-primary" onclick="openAddSection()">＋ Add Activity</button>
   </div>
 
   <div id="sections-container"></div>
@@ -37,19 +46,76 @@
 <div class="modal-overlay" id="sectionModal">
   <div class="modal">
     <h2>✦ Add New Activity</h2>
+
     <div class="modal-field">
       <label>Activity Name</label>
       <input type="text" class="input-field" id="modalSectionName" placeholder="e.g. Bone Dragon Nest Light" />
     </div>
+
     <div class="modal-field">
-      <label>Reset Type</label>
-      <select id="modalSectionType">
+      <label>Type</label>
+      <select id="modalSectionType" onchange="onTypeChange()">
         <option value="weekly">Weekly</option>
         <option value="daily">Daily</option>
         <option value="once">One-time</option>
         <option value="counter">Counter (Inventory)</option>
       </select>
     </div>
+
+    <div id="custom-reset-fields" style="display:none;">
+      <div class="modal-field">
+        <label>Reset Day</label>
+        <select id="modalResetDay">
+          <option value="0">Sunday</option>
+          <option value="1">Monday</option>
+          <option value="2">Tuesday</option>
+          <option value="3">Wednesday</option>
+          <option value="4">Thursday</option>
+          <option value="5">Friday</option>
+          <option value="6">Saturday</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label>Reset Time</label>
+        <input type="time" class="input-field" id="modalResetTime" value="09:00" />
+      </div>
+      <div class="modal-field">
+        <label>Timezone</label>
+        <select id="modalResetTz">
+          <option value="Asia/Manila">Asia/Manila (PH, UTC+8)</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">America/New_York (ET)</option>
+          <option value="America/Los_Angeles">America/Los_Angeles (PT)</option>
+          <option value="Europe/London">Europe/London (GMT/BST)</option>
+          <option value="Europe/Paris">Europe/Paris (CET)</option>
+          <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
+          <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
+          <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="daily-reset-fields" style="display:none;">
+      <div class="modal-field">
+        <label>Reset Time</label>
+        <input type="time" class="input-field" id="modalDailyResetTime" value="09:00" />
+      </div>
+      <div class="modal-field">
+        <label>Timezone</label>
+        <select id="modalDailyResetTz">
+          <option value="Asia/Manila">Asia/Manila (PH, UTC+8)</option>
+          <option value="UTC">UTC</option>
+          <option value="America/New_York">America/New_York (ET)</option>
+          <option value="America/Los_Angeles">America/Los_Angeles (PT)</option>
+          <option value="Europe/London">Europe/London (GMT/BST)</option>
+          <option value="Europe/Paris">Europe/Paris (CET)</option>
+          <option value="Asia/Tokyo">Asia/Tokyo (JST, UTC+9)</option>
+          <option value="Asia/Shanghai">Asia/Shanghai (CST, UTC+8)</option>
+          <option value="Australia/Sydney">Australia/Sydney (AEST)</option>
+        </select>
+      </div>
+    </div>
+
     <div class="modal-field">
       <label>Color Accent</label>
       <select id="modalSectionColor">
@@ -61,6 +127,7 @@
         <option value="#5ce06a">⬤ Green</option>
       </select>
     </div>
+
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal('sectionModal')">Cancel</button>
       <button class="btn-primary" onclick="confirmAddSection()">Create</button>
